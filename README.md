@@ -17,9 +17,11 @@ you'll need a way of doling out **node IDs**.
 
 In the era of Docker and Kubernetes, containers and pods are expected to be ephemeral.
 They can go down at any moment.
-If that happens, they have no way of relinquishing their node IDs.
-So we need a coordinated solution for managing node IDs and
-for detecting which node IDs can requisitioned and reallocated.
+If that happens, they have no way of relinquishing their node IDs, 
+and so that node ID is essentially lost.
+
+Fortunately, checking for "stale" IDs is super easy, so we can ensure
+we have a dynamic and reliable way of re-requisitioning and reallocating node IDs.
 
 ## What does Frost do?
 Frost maintains two maps of app IDs.
