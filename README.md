@@ -15,11 +15,11 @@ Each Snowflake ID is a 63 bit int.
 If you're planning on horizontally scaling (i.e., replicating) your app, 
 you'll need a way of doling out **node IDs**.
 
-Thanks to tools like Docker, we are entering the era of containers, in which applications are expected to be ephemeral.
-Your container (or "Pod," if you use Kubernetes) can go down at any moment.
-If that happens, your app has no way of relinquishing its node ID.
-
-In short, we need a coordinated solution for managing node IDs.
+In the era of Docker and Kubernetes, containers and pods are expected to be ephemeral.
+They can go down at any moment.
+If that happens, they have no way of relinquishing their node IDs.
+So we need a coordinated solution for managing node IDs and
+for detecting which node IDs can requisitioned and reallocated.
 
 ## What does Frost do?
 Frost maintains two maps of app IDs.
