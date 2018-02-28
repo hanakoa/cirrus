@@ -34,3 +34,9 @@ The *Heartbeat Map* maps app IDs to the latest heartbeat time of that app.
 Apps must send heartbeats to Frost routinely, otherwise its entries are removed from both maps.
 
 Every N seconds, Frost checks for heartbeat times older than M seconds and removes accordingly.
+
+## TODO
+- Configurable durations
+- Dockerfile
+- Helm chart
+- Scalable/reliable persistence with etcd?
