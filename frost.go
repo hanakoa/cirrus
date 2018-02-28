@@ -14,14 +14,18 @@ func main() {
 	nodeIds = make(map[string]int, 1024)
 	heartbeats = make(map[string]time.Time, 1024)
 
-	// apps have to heartbeat every 30 seconds
+	// how long an apps can abstain from heartbeat-ing its node ID
+	// before we consider it stale
 	heartbeatPeriodicity := time.Second * 30
+
+	// how often we check for stale node IDs
+	staleCheckPeriodicity := time.Second * 5
 
 	seedTestData()
 
 	var wg sync.WaitGroup
 	wg.Add(1)
-	go pruneStaleEntries(heartbeatPeriodicity, time.Second * 2)
+	go pruneStaleEntries(heartbeatPeriodicity, staleCheckPeriodicity)
 	wg.Wait()
 }
 
