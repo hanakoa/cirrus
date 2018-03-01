@@ -5,18 +5,29 @@ import (
 	"log"
 	"sync"
 	"github.com/google/uuid"
+	"bytes"
+	"strconv"
 )
 
-var nodeIds map[string]int
-var heartbeats map[string]time.Time
+const (
+	//NumNodes = 1024
+	NumNodes = 3
+	GrpcPort = 50051
+)
+
+// maps node IDs to app IDs
+var NodeIds map[int]string
+
+// maps node IDs to heartbeats
+var Heartbeats map[int]time.Time
 
 func main() {
-	nodeIds = make(map[string]int, 1024)
-	heartbeats = make(map[string]time.Time, 1024)
+	NodeIds = make(map[int]string, NumNodes)
+	Heartbeats = make(map[int]time.Time, NumNodes)
 
 	// how long an apps can abstain from heartbeat-ing its node ID
 	// before we consider it stale
-	heartbeatPeriodicity := time.Second * 30
+	heartbeatPeriodicity := time.Second * 10
 
 	// how often we check for stale node IDs
 	staleCheckPeriodicity := time.Second * 5
@@ -25,27 +36,44 @@ func main() {
 
 	var wg sync.WaitGroup
 	wg.Add(1)
-	go pruneStaleEntries(heartbeatPeriodicity, staleCheckPeriodicity)
+	go PruneStaleEntries(heartbeatPeriodicity, staleCheckPeriodicity)
+
+	wg.Add(1)
+	s := GrpcServer{port: GrpcPort}
+	go s.Run()
+
 	wg.Wait()
 }
 
 func seedTestData() {
 	now := time.Now()
-	for i := 0; i < 10; i++ {
-		heartbeats[uuid.New().String()] = now
+	for i := 0; i < NumNodes; i++ {
+		NodeIds[i] = uuid.New().String()
+		Heartbeats[i] = now
 	}
 }
 
-// pruneStaleEntries checks for stale node IDs.
-func pruneStaleEntries(heartbeatPeriodicity, sleepDuration time.Duration) {
-	for {
-		log.Println("Checking for stale node IDs...")
-		now := time.Now()
-		for appID, heartbeatTime := range heartbeats {
-			if now.After(heartbeatTime.Add(heartbeatPeriodicity)) {
-				log.Printf("App %s is expired. Last heartbeat was %s", appID, heartbeatTime)
-			}
+func getAvailableNodeIds() []int {
+	var nodeIds []int
+	for i := 0; i < NumNodes; i++ {
+		if _, ok := NodeIds[i]; !ok {
+			nodeIds = append(nodeIds, i)
 		}
-		time.Sleep(sleepDuration)
+	}
+	return nodeIds
+}
+
+func printAvailableNodeIds() {
+	var buffer bytes.Buffer
+	nodeIds := getAvailableNodeIds()
+	for _, n := range nodeIds {
+		buffer.WriteString(" | ")
+		buffer.WriteString(strconv.Itoa(n))
+	}
+	s := buffer.String()
+	if len(s) > 0 {
+		log.Println("Available nodes:", s)
+	} else {
+		log.Println("No nodes available... 😢")
 	}
 }
