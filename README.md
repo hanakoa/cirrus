@@ -1,4 +1,7 @@
 # Frost
+[![GoDoc](https://godoc.org/github.com/kevinmichaelchen/frost?status.svg)](https://godoc.org/github.com/kevinmichaelchen/frost)
+[![Go report](http://goreportcard.com/badge/kevinmichaelchen/frost)](http://goreportcard.com/report/kevinmichaelchen/frost) 
+
 Frost lets you manage your Snowflake node IDs.
 
 ## Not Production Ready
