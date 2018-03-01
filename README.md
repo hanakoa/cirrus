@@ -27,18 +27,21 @@ Fortunately, checking for "stale" IDs is super easy, so we can ensure
 we have a dynamic and reliable way of re-requisitioning and reallocating node IDs.
 
 ## What does Frost do?
-Frost maintains two maps of app IDs.
-An app ID is a string and can represent anything (an int, a UUID, a hash, etc).
+Frost maps node IDs to app IDs.
 
-The *Node Map* maps app IDs to node IDs (an int ranging from 0 to 1023).
+An app ID is a string that can be anything (e.g., an int, a UUID, a hash, etc).
 
-The *Heartbeat Map* maps app IDs to the latest heartbeat time of that app.
+A node ID is an int ranging from 0 to 1023.
 
-Apps must send heartbeats to Frost routinely, otherwise its entries are removed from both maps.
-
-Every N seconds, Frost checks for heartbeat times older than M seconds and removes accordingly.
+Apps must periodically send heartbeats to Frost, otherwise their node IDs get requisitioned.
 
 ## TODO
+### Questions
+- How do we know if a node has actually died? 
+What if it's just busy and stays alive? 
+There might be a moment where 2 apps generate PKs with the same node ID?
+That would be disastrous.
+
 ### Single point of failure
 Frost needs to be able scale out so it's not a single point of failure.
 
