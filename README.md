@@ -37,6 +37,7 @@ Every N seconds, Frost checks for heartbeat times older than M seconds and remov
 
 ## TODO
 - Configurable durations
+- Replace `AvailableNodeIds` channel with a RabbitMQ queue (so frost apps can scale)
+- Replace `Heartbeats` map with etcd (so frost apps can scale)
 - Dockerfile
 - Helm chart
-- Scalable/reliable persistence with etcd?

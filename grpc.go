@@ -1,4 +1,4 @@
-package main
+package frost
 
 import (
 	"fmt"
@@ -17,8 +17,8 @@ type GrpcServer struct {
 }
 
 func (service *GrpcServer) Heartbeat(ctx context.Context, in *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
-	// TODO get first available node ID
-	return &pb.HeartbeatResponse{AppID: in.AppID, NodeID: 1}, nil
+	nodeId := <-AvailableNodeIds
+	return &pb.HeartbeatResponse{AppID: in.AppID, NodeID: int32(nodeId)}, nil
 }
 
 func (service *GrpcServer) Run() {
