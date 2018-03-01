@@ -19,15 +19,14 @@ type GrpcServer struct {
 
 func (service *GrpcServer) Heartbeat(ctx context.Context, in *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
 	log.Printf("[gRPC] -- Processing heartbeat for app %s", in.AppID)
-	if nodeId := in.GetNodeID(); nodeId != 0 {
+	if nodeID := in.GetNodeID(); nodeID != 0 {
 		// TODO do we need to lock Heartbeats, since the prune goroutine is deleting from it?
-		if time.Now().Before(Heartbeats[int(nodeId)].Add(HeartbeatPeriodicity)) {
+		if time.Now().Before(Heartbeats[int(nodeID)].Add(HeartbeatPeriodicity)) {
 			log.Printf("[gRPC] -- App %s already has a valid node ID... Extending ID lifetime...", in.AppID)
-			Heartbeats[int(nodeId)] = time.Now()
-			return &pb.HeartbeatResponse{AppID: in.AppID, NodeID: nodeId}, nil
-		} else {
-			log.Printf("[gRPC] -- App %s has expired node ID %d", in.AppID, nodeId)
+			Heartbeats[int(nodeID)] = time.Now()
+			return &pb.HeartbeatResponse{AppID: in.AppID, NodeID: nodeID}, nil
 		}
+		log.Printf("[gRPC] -- App %s has expired node ID %d", in.AppID, nodeID)
 	}
 
 	// TODO if you don't create more than 1024, there should always be an available nodeID,
@@ -35,13 +34,13 @@ func (service *GrpcServer) Heartbeat(ctx context.Context, in *pb.HeartbeatReques
 	// instead of letting the client hang
 	// https://stackoverflow.com/questions/3398490/checking-if-a-channel-has-a-ready-to-read-value-using-go
 	// TODO check if channel has ready-to-read value, otherwise return error
-	nodeId := <-AvailableNodeIds
-	log.Printf("[gRPC] -- Granting node ID %d to app %s", nodeId, in.AppID)
-	Heartbeats[nodeId] = time.Now()
-	return &pb.HeartbeatResponse{AppID: in.AppID, NodeID: int32(nodeId)}, nil
+	nodeID := <-AvailableNodeIds
+	log.Printf("[gRPC] -- Granting node ID %d to app %s", nodeID, in.AppID)
+	Heartbeats[nodeID] = time.Now()
+	return &pb.HeartbeatResponse{AppID: in.AppID, NodeID: int32(nodeID)}, nil
 }
 
-func (service *GrpcServer) Run() {
+func (service *GrpcServer) run() {
 	address := fmt.Sprintf(":%d", GrpcPort)
 	log.Printf("Listening on %s", address)
 	lis, err := net.Listen("tcp", address)

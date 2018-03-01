@@ -24,7 +24,7 @@ func TestFrost(t *testing.T) {
 	var wg sync.WaitGroup
 
 	wg.Add(1)
-	go f.Run()
+	go f.run()
 
 	time.Sleep(time.Second * 2)
 
@@ -49,15 +49,15 @@ func spawnTestApp(appID string, client pb.HeartbeatServiceClient) {
 		log.Printf("[App %s] -- Acquired node ID: %d", appID, response.NodeID)
 	}
 
-	var nodeId int32
+	var nodeID int32
 	for {
 		// Send a heartbeat periodically, with the current Node ID
-		request := &pb.HeartbeatRequest{AppID: appID, NodeID: nodeId}
+		request := &pb.HeartbeatRequest{AppID: appID, NodeID: nodeID}
 		if response, err := client.Heartbeat(context.Background(), request); err != nil {
 			panic(err)
 		} else {
 			log.Printf("[App %s] -- Acquired node ID: %d", appID, response.NodeID)
-			nodeId = response.NodeID
+			nodeID = response.NodeID
 		}
 
 		// Sleep for random time

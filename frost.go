@@ -8,22 +8,32 @@ import (
 
 const (
 	//NumNodes = 1024
+
+	// NumNodes is the number of nodes we offer (max 1024)
 	NumNodes = 10
+	// GrpcPort is the port our gRPC server runs on
 	GrpcPort = 50051
 )
 
 var (
+	// HeartbeatPeriodicity is how often apps should heartbeat before we requisition their node IDs.
 	HeartbeatPeriodicity = getHeartbeatPeriodicity()
-	// how often we check for stale node IDs
+	// StaleCheckPeriodicity is how often we check for stale node IDs
 	StaleCheckPeriodicity = time.Second * 5
 )
 
+// AvailableNodeIds is a channel of available node IDs.
+// As nodes die, their node IDs will be requisitioned and sent into the channel.
 var AvailableNodeIds = make(chan int, NumNodes)
 
 // maps node IDs to heartbeats
 // TODO use int32, since protobuf has no vanilla int?
+
+// Heartbeats stores the last time nodes sent a heartbeat.
 var Heartbeats map[int]time.Time
 
+// FrostServer is the main struct used to run Frost.
+// It runs a gRPC server for heartbeats, as well as handles requisitioning of stale node IDs.
 type FrostServer struct {
 }
 
@@ -33,7 +43,7 @@ func getHeartbeatPeriodicity() time.Duration {
 	return time.Second * 10
 }
 
-func (f *FrostServer) Run() {
+func (f *FrostServer) run() {
 	Heartbeats = make(map[int]time.Time, NumNodes)
 
 	var wg sync.WaitGroup
@@ -42,7 +52,7 @@ func (f *FrostServer) Run() {
 
 	wg.Add(1)
 	s := &GrpcServer{port: GrpcPort}
-	go s.Run()
+	go s.run()
 
 	wg.Wait()
 }
