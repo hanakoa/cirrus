@@ -14,6 +14,8 @@ const (
 
 var (
 	HeartbeatPeriodicity = getHeartbeatPeriodicity()
+	// how often we check for stale node IDs
+	StaleCheckPeriodicity = time.Second * 5
 )
 
 var AvailableNodeIds = make(chan int, NumNodes)
@@ -34,12 +36,9 @@ func getHeartbeatPeriodicity() time.Duration {
 func (f *FrostServer) Run() {
 	Heartbeats = make(map[int]time.Time, NumNodes)
 
-	// how often we check for stale node IDs
-	staleCheckPeriodicity := time.Second * 5
-
 	var wg sync.WaitGroup
 	wg.Add(1)
-	go PruneStaleEntries(staleCheckPeriodicity)
+	go PruneStaleEntries(StaleCheckPeriodicity)
 
 	wg.Add(1)
 	s := &GrpcServer{port: GrpcPort}
