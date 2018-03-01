@@ -26,6 +26,8 @@ func TestFrost(t *testing.T) {
 	wg.Add(1)
 	go f.Run()
 
+	time.Sleep(time.Second * 2)
+
 	conn := utils.InitGrpcConn(fmt.Sprintf("%s:%d", "localhost", GrpcPort), 3, time.Second*5)
 	client := pb.NewHeartbeatServiceClient(conn)
 
@@ -39,11 +41,23 @@ func TestFrost(t *testing.T) {
 }
 
 func spawnTestApp(appID string, client pb.HeartbeatServiceClient) {
+	// Send initial heartbeat to obtain initial node ID
+	request := &pb.HeartbeatRequest{AppID: appID}
+	if response, err := client.Heartbeat(context.Background(), request); err != nil {
+		panic(err)
+	} else {
+		log.Printf("[App %s] -- Acquired node ID: %d", appID, response.NodeID)
+	}
+
+	var nodeId int32
 	for {
-		// Send a heartbeat
-		request := &pb.HeartbeatRequest{AppID: appID}
+		// Send a heartbeat periodically, with the current Node ID
+		request := &pb.HeartbeatRequest{AppID: appID, NodeID: nodeId}
 		if response, err := client.Heartbeat(context.Background(), request); err != nil {
+			panic(err)
+		} else {
 			log.Printf("[App %s] -- Acquired node ID: %d", appID, response.NodeID)
+			nodeId = response.NodeID
 		}
 
 		// Sleep for random time
