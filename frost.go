@@ -32,9 +32,9 @@ var AvailableNodeIds = make(chan int, NumNodes)
 // Heartbeats stores the last time nodes sent a heartbeat.
 var Heartbeats map[int]time.Time
 
-// FrostServer is the main struct used to run Frost.
+// Server is the main struct used to run Frost.
 // It runs a gRPC server for heartbeats, as well as handles requisitioning of stale node IDs.
-type FrostServer struct {
+type Server struct {
 }
 
 // how long an apps can abstain from heartbeat-ing its node ID
@@ -43,7 +43,7 @@ func getHeartbeatPeriodicity() time.Duration {
 	return time.Second * 10
 }
 
-func (f *FrostServer) run() {
+func (f *Server) run() {
 	Heartbeats = make(map[int]time.Time, NumNodes)
 
 	var wg sync.WaitGroup

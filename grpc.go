@@ -17,6 +17,7 @@ type GrpcServer struct {
 	port int
 }
 
+// Heartbeat is a gRPC endpoint to allow apps to request a node ID.
 func (service *GrpcServer) Heartbeat(ctx context.Context, in *pb.HeartbeatRequest) (*pb.HeartbeatResponse, error) {
 	log.Printf("[gRPC] -- Processing heartbeat for app %s", in.AppID)
 	if nodeID := in.GetNodeID(); nodeID != 0 {

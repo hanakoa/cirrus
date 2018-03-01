@@ -19,7 +19,7 @@ func TestFrost(t *testing.T) {
 		AvailableNodeIds <- i
 	}
 	log.Println("Finished seeding...")
-	f := &FrostServer{}
+	f := &Server{}
 
 	var wg sync.WaitGroup
 
