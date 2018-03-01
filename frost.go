@@ -8,7 +8,7 @@ import (
 
 const (
 	//NumNodes = 1024
-	NumNodes = 3
+	NumNodes = 10
 	GrpcPort = 50051
 )
 
@@ -47,7 +47,7 @@ func PruneStaleEntries(heartbeatPeriodicity, sleepDuration time.Duration) {
 		log.Println("Checking for stale node IDs...")
 		for nodeID, heartbeatTime := range Heartbeats {
 			if time.Now().After(heartbeatTime.Add(heartbeatPeriodicity)) {
-				log.Printf("Node %d is newly available\n", nodeID)
+				log.Printf("Node %d has been requisitioned", nodeID)
 				AvailableNodeIds <- nodeID
 				delete(Heartbeats, nodeID)
 			}
