@@ -30,12 +30,14 @@ func (service *GrpcServer) Heartbeat(ctx context.Context, in *pb.HeartbeatReques
 		}
 	}
 
-	nodeId := <-AvailableNodeIds
-	log.Printf("[gRPC] -- Granting node ID %d to app %s", nodeId, in.AppID)
-	Heartbeats[nodeId] = time.Now()
 	// TODO if you don't create more than 1024, there should always be an available nodeID,
 	// however, we should probably return an error if there are no available nodes,
 	// instead of letting the client hang
+	// https://stackoverflow.com/questions/3398490/checking-if-a-channel-has-a-ready-to-read-value-using-go
+	// TODO check if channel has ready-to-read value, otherwise return error
+	nodeId := <-AvailableNodeIds
+	log.Printf("[gRPC] -- Granting node ID %d to app %s", nodeId, in.AppID)
+	Heartbeats[nodeId] = time.Now()
 	return &pb.HeartbeatResponse{AppID: in.AppID, NodeID: int32(nodeId)}, nil
 }
 
