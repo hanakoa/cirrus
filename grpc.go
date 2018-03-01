@@ -2,12 +2,12 @@ package frost
 
 import (
 	"fmt"
+	pb "github.com/kevinmichaelchen/frost/pb"
 	"golang.org/x/net/context"
-	"log"
-	"net"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
-	pb "github.com/kevinmichaelchen/frost/pb"
+	"log"
+	"net"
 	"time"
 )
 

@@ -1,16 +1,16 @@
 package frost
 
 import (
-	"testing"
-	"log"
-	"sync"
-	"time"
-	"math/rand"
+	"fmt"
 	pb "github.com/kevinmichaelchen/frost/pb"
 	"github.com/kevinmichaelchen/my-go-utils"
-	"fmt"
 	"golang.org/x/net/context"
+	"log"
+	"math/rand"
 	"strconv"
+	"sync"
+	"testing"
+	"time"
 )
 
 func TestFrost(t *testing.T) {

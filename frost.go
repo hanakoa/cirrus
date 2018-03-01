@@ -1,9 +1,9 @@
 package frost
 
 import (
-	"time"
-	"sync"
 	"log"
+	"sync"
+	"time"
 )
 
 const (
