@@ -16,6 +16,18 @@ build:
 run:
 	./bin/cirrus
 
+.PHONY: docker-build
+docker-build:
+	docker build -t kevinmichaelchen/cirrus:latest .
+
+.PHONY: docker-rebuild
+docker-rebuild:
+	docker build -t kevinmichaelchen/cirrus:latest . --no-cache
+
+.PHONY: lint
+lint:
+	golint .
+
 .PHONY: fmt
 fmt:
 	go fmt .
