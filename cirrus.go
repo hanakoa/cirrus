@@ -46,6 +46,12 @@ func getHeartbeatPeriodicity() time.Duration {
 func (f *Server) run() {
 	Heartbeats = make(map[int]time.Time, NumNodes)
 
+	log.Println("Seeding available node IDs...")
+	for i := 0; i < NumNodes; i++ {
+		AvailableNodeIds <- i
+	}
+	log.Println("Finished seeding...")
+
 	var wg sync.WaitGroup
 	wg.Add(1)
 	go PruneStaleEntries(StaleCheckPeriodicity)

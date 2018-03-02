@@ -14,11 +14,6 @@ import (
 )
 
 func TestCirrus(t *testing.T) {
-	log.Println("Seeding available node IDs...")
-	for i := 0; i < NumNodes; i++ {
-		AvailableNodeIds <- i
-	}
-	log.Println("Finished seeding...")
 	f := &Server{}
 
 	var wg sync.WaitGroup
