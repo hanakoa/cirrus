@@ -1,13 +1,13 @@
-FROM golang:1.9.2 as builder
+FROM golang:1.10.0 as builder
 ADD . /go/src/github.com/kevinmichaelchen/cirrus
 WORKDIR /go/src/github.com/kevinmichaelchen/cirrus
 RUN go get ./... && \
     CGO_ENABLED=0 GOOS=linux go build -a -o ./bin/cirrus .
 
 FROM alpine:latest
-#ENV CIRRUS_USER="alpaca" \
+#ENV CIRRUS_USER="cirrus" \
 #    CIRRUS_UID="8080" \
-#    CIRRUS_GROUP="alpaca" \
+#    CIRRUS_GROUP="cirrus" \
 #    CIRRUS_GID="8080"
 RUN apk --no-cache add ca-certificates
 #&& \
