@@ -1,4 +1,4 @@
-package frost
+package cirrus
 
 import (
 	"log"
@@ -32,7 +32,7 @@ var AvailableNodeIds = make(chan int, NumNodes)
 // Heartbeats stores the last time nodes sent a heartbeat.
 var Heartbeats map[int]time.Time
 
-// Server is the main struct used to run Frost.
+// Server is the main struct used to run Cirrus.
 // It runs a gRPC server for heartbeats, as well as handles requisitioning of stale node IDs.
 type Server struct {
 }

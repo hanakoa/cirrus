@@ -10,11 +10,11 @@ grpc:
 
 .PHONY: build
 build:
-	go build -o ./bin/frost .
+	go build -o ./bin/cirrus .
 
 .PHONY: run
 run:
-	./bin/frost
+	./bin/cirrus
 
 .PHONY: fmt
 fmt:

@@ -1,8 +1,8 @@
-package frost
+package cirrus
 
 import (
 	"fmt"
-	pb "github.com/kevinmichaelchen/frost/pb"
+	pb "github.com/kevinmichaelchen/cirrus/pb"
 	"github.com/kevinmichaelchen/my-go-utils"
 	"golang.org/x/net/context"
 	"log"
@@ -13,7 +13,7 @@ import (
 	"time"
 )
 
-func TestFrost(t *testing.T) {
+func TestCirrus(t *testing.T) {
 	log.Println("Seeding available node IDs...")
 	for i := 0; i < NumNodes; i++ {
 		AvailableNodeIds <- i

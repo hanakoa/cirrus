@@ -1,8 +1,13 @@
-# Frost
-[![GoDoc](https://godoc.org/github.com/kevinmichaelchen/frost?status.svg)](https://godoc.org/github.com/kevinmichaelchen/frost)
-[![Go report](http://goreportcard.com/badge/kevinmichaelchen/frost)](http://goreportcard.com/report/kevinmichaelchen/frost) 
+# Cirrus
+[![GoDoc](https://godoc.org/github.com/kevinmichaelchen/cirrus?status.svg)](https://godoc.org/github.com/kevinmichaelchen/cirrus)
+[![Go report](http://goreportcard.com/badge/kevinmichaelchen/cirrus)](http://goreportcard.com/report/kevinmichaelchen/cirrus) 
 
-Frost lets you manage your Snowflake node IDs.
+Cirrus lets you manage your Snowflake node IDs.
+
+## Etymology
+> High-level clouds, called cirrus clouds, can reach heights of 20,000 feet (6,000 meters)
+and are typically thin. They do not produce rain and often indicate fair weather.
+They are usually made up of ice.
 
 ## Not Production Ready
 See TODO list below.
@@ -17,7 +22,7 @@ Each Snowflake ID is a 63 bit int.
 - 10 bits for a **node ID** (ranging from 0 to 1023)
 - 12 bits for a sequence number (ranging from 0 to 4095)
 
-## Why Frost?
+## Why Cirrus?
 If you're planning on horizontally scaling (i.e., replicating) your app, 
 you'll need a way of doling out **node IDs**.
 
@@ -29,14 +34,14 @@ and so that node ID is essentially lost.
 Fortunately, checking for "stale" IDs is super easy, so we can ensure
 we have a dynamic and reliable way of re-requisitioning and reallocating node IDs.
 
-## What does Frost do?
-Frost maps node IDs to app IDs.
+## What does Cirrus do?
+Cirrus maps node IDs to app IDs.
 
 An app ID is a string that can be anything (e.g., an int, a UUID, a hash, etc).
 
 A node ID is an int ranging from 0 to 1023.
 
-Apps must periodically send heartbeats to Frost, otherwise their node IDs get requisitioned.
+Apps must periodically send heartbeats to Cirrus, otherwise their node IDs get requisitioned.
 
 ## TODO
 ### Questions
@@ -46,7 +51,7 @@ There might be a moment where 2 apps generate PKs with the same node ID?
 That would be disastrous.
 
 ### Single point of failure
-Frost needs to be able scale out so it's not a single point of failure.
+Cirrus needs to be able scale out so it's not a single point of failure.
 
 We need a couple things:
 - Replace `AvailableNodeIds` channel with a distributed queue system 
