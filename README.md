@@ -1,6 +1,6 @@
 # Cirrus
-[![GoDoc](https://godoc.org/github.com/kevinmichaelchen/cirrus?status.svg)](https://godoc.org/github.com/kevinmichaelchen/cirrus)
-[![Go report](http://goreportcard.com/badge/kevinmichaelchen/cirrus)](http://goreportcard.com/report/kevinmichaelchen/cirrus) 
+[![GoDoc](https://godoc.org/github.com/hanakoa/cirrus?status.svg)](https://godoc.org/github.com/hanakoa/cirrus)
+[![Go report](http://goreportcard.com/badge/hanakoa/cirrus)](http://goreportcard.com/report/hanakoa/cirrus) 
 
 Cirrus lets you manage your Snowflake node IDs.
 

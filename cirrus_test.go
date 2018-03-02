@@ -2,8 +2,8 @@ package cirrus
 
 import (
 	"fmt"
-	pb "github.com/kevinmichaelchen/cirrus/pb"
-	"github.com/kevinmichaelchen/my-go-utils"
+	pb "github.com/hanakoa/cirrus/pb"
+	"github.com/hanakoa/my-go-utils"
 	"golang.org/x/net/context"
 	"log"
 	"math/rand"

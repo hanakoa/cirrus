@@ -2,7 +2,7 @@ package cirrus
 
 import (
 	"fmt"
-	pb "github.com/kevinmichaelchen/cirrus/pb"
+	pb "github.com/hanakoa/cirrus/pb"
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"

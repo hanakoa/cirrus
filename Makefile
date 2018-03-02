@@ -18,11 +18,11 @@ run:
 
 .PHONY: docker-build
 docker-build:
-	docker build -t kevinmichaelchen/cirrus:latest .
+	docker build -t hanakoa/cirrus:latest .
 
 .PHONY: docker-rebuild
 docker-rebuild:
-	docker build -t kevinmichaelchen/cirrus:latest . --no-cache
+	docker build -t hanakoa/cirrus:latest . --no-cache
 
 .PHONY: lint
 lint:
